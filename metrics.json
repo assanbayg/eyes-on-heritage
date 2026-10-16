@@ -1,0 +1,21 @@
+{
+  "_note": "Edit freely - the 'How good is it' tab reads this file. Overall + per-class F1 are the placeholders from the brief; the confusion matrix and counts were copied from the summary stored in demo.html. Replace with your final numbers.",
+  "protocol": "Leave-one-city-out: the model is trained on four cities and tested on the fifth, which it has never seen; this is repeated for every city.",
+  "macro_f1": 0.332,
+  "per_class_f1": {
+    "no_change": 0.64,
+    "construction": 0.51,
+    "soil_sealing": 0.11,
+    "destruction": 0.06
+  },
+  "n_test_points": 769,
+  "confusion": {
+    "labels": ["no_change", "construction", "destruction", "soil_sealing"],
+    "matrix": [
+      [262, 111, 17, 12],
+      [89, 137, 9, 6],
+      [32, 26, 3, 2],
+      [35, 19, 4, 5]
+    ]
+  }
+}

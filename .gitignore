@@ -1,0 +1,11 @@
+# data & large sources not needed to run the app
+Data/
+demo.html
+main.ipynb
+
+# environments / caches
+.venv/
+__pycache__/
+*.pyc
+.gradio/
+.DS_Store

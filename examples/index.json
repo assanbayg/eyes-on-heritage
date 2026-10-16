@@ -1,0 +1,194 @@
+[
+  {
+    "site": "derna",
+    "true_label": "construction",
+    "pred_label": "construction",
+    "confidence": 0.416,
+    "proba": {
+      "no_change": 0.29,
+      "construction": 0.416,
+      "destruction": 0.171,
+      "soil_sealing": 0.123
+    },
+    "before_year": 2022,
+    "after_year": 2023,
+    "before": "01_before.png",
+    "after": "01_after.png"
+  },
+  {
+    "site": "timbuktu",
+    "true_label": "construction",
+    "pred_label": "construction",
+    "confidence": 0.463,
+    "proba": {
+      "no_change": 0.336,
+      "construction": 0.463,
+      "destruction": 0.101,
+      "soil_sealing": 0.1
+    },
+    "before_year": 2024,
+    "after_year": 2025,
+    "before": "02_before.png",
+    "after": "02_after.png"
+  },
+  {
+    "site": "agadez",
+    "true_label": "construction",
+    "pred_label": "no_change",
+    "confidence": 0.49,
+    "proba": {
+      "no_change": 0.49,
+      "construction": 0.21,
+      "destruction": 0.075,
+      "soil_sealing": 0.225
+    },
+    "before_year": 2022,
+    "after_year": 2023,
+    "before": "03_before.png",
+    "after": "03_after.png"
+  },
+  {
+    "site": "derna",
+    "true_label": "destruction",
+    "pred_label": "destruction",
+    "confidence": 0.399,
+    "proba": {
+      "no_change": 0.286,
+      "construction": 0.195,
+      "destruction": 0.399,
+      "soil_sealing": 0.12
+    },
+    "before_year": 2022,
+    "after_year": 2023,
+    "before": "04_before.png",
+    "after": "04_after.png"
+  },
+  {
+    "site": "agadez",
+    "true_label": "destruction",
+    "pred_label": "construction",
+    "confidence": 0.404,
+    "proba": {
+      "no_change": 0.301,
+      "construction": 0.404,
+      "destruction": 0.081,
+      "soil_sealing": 0.214
+    },
+    "before_year": 2024,
+    "after_year": 2025,
+    "before": "05_before.png",
+    "after": "05_after.png"
+  },
+  {
+    "site": "aleppo",
+    "true_label": "destruction",
+    "pred_label": "no_change",
+    "confidence": 0.398,
+    "proba": {
+      "no_change": 0.398,
+      "construction": 0.228,
+      "destruction": 0.243,
+      "soil_sealing": 0.131
+    },
+    "before_year": 2023,
+    "after_year": 2024,
+    "before": "06_before.png",
+    "after": "06_after.png"
+  },
+  {
+    "site": "aleppo",
+    "true_label": "soil_sealing",
+    "pred_label": "soil_sealing",
+    "confidence": 0.363,
+    "proba": {
+      "no_change": 0.255,
+      "construction": 0.296,
+      "destruction": 0.086,
+      "soil_sealing": 0.363
+    },
+    "before_year": 2021,
+    "after_year": 2022,
+    "before": "07_before.png",
+    "after": "07_after.png"
+  },
+  {
+    "site": "agadez",
+    "true_label": "soil_sealing",
+    "pred_label": "soil_sealing",
+    "confidence": 0.369,
+    "proba": {
+      "no_change": 0.341,
+      "construction": 0.199,
+      "destruction": 0.091,
+      "soil_sealing": 0.369
+    },
+    "before_year": 2021,
+    "after_year": 2022,
+    "before": "08_before.png",
+    "after": "08_after.png"
+  },
+  {
+    "site": "agadez",
+    "true_label": "soil_sealing",
+    "pred_label": "no_change",
+    "confidence": 0.394,
+    "proba": {
+      "no_change": 0.394,
+      "construction": 0.29,
+      "destruction": 0.148,
+      "soil_sealing": 0.169
+    },
+    "before_year": 2022,
+    "after_year": 2023,
+    "before": "09_before.png",
+    "after": "09_after.png"
+  },
+  {
+    "site": "marrakesh",
+    "true_label": "no_change",
+    "pred_label": "no_change",
+    "confidence": 0.311,
+    "proba": {
+      "no_change": 0.311,
+      "construction": 0.182,
+      "destruction": 0.244,
+      "soil_sealing": 0.263
+    },
+    "before_year": 2025,
+    "after_year": 2026,
+    "before": "10_before.png",
+    "after": "10_after.png"
+  },
+  {
+    "site": "agadez",
+    "true_label": "no_change",
+    "pred_label": "construction",
+    "confidence": 0.368,
+    "proba": {
+      "no_change": 0.292,
+      "construction": 0.368,
+      "destruction": 0.226,
+      "soil_sealing": 0.114
+    },
+    "before_year": 2021,
+    "after_year": 2022,
+    "before": "11_before.png",
+    "after": "11_after.png"
+  },
+  {
+    "site": "aleppo",
+    "true_label": "no_change",
+    "pred_label": "construction",
+    "confidence": 0.362,
+    "proba": {
+      "no_change": 0.247,
+      "construction": 0.362,
+      "destruction": 0.285,
+      "soil_sealing": 0.105
+    },
+    "before_year": 2019,
+    "after_year": 2020,
+    "before": "12_before.png",
+    "after": "12_after.png"
+  }
+]

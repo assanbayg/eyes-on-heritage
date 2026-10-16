@@ -1,0 +1,10 @@
+gradio>=5
+numpy
+pillow
+matplotlib
+# only for MODEL_BACKEND=baseline (file was saved with scikit-learn 1.8):
+# scikit-learn>=1.8
+# joblib
+# only for make_examples.py --tifs:
+# geopandas
+# rasterio

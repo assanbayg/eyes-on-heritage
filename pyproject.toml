@@ -1,0 +1,20 @@
+[project]
+name = "eyes-on-heritage"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "gradio>=5",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
+    "pillow>=12.3.0",
+]
+
+[project.optional-dependencies]
+baseline = [
+    "joblib>=1.6.0",
+    "scikit-learn>=1.8",
+]
+tifs = [
+    "geopandas>=1.2.0",
+    "rasterio>=1.5.2",
+]
