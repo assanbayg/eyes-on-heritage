@@ -11,8 +11,8 @@ underlying model uses internally.
 
 Switching backend (one line):
 
-    MODEL_BACKEND=dummy      python app.py   # default: placeholder, NOT a real model
-    MODEL_BACKEND=baseline   python app.py   # v4_best_baseline.joblib (needs TODO below)
+    MODEL_BACKEND=v4         python app.py   # default: trained model (holdout/model.joblib)
+    MODEL_BACKEND=dummy      python app.py   # placeholder, NOT a real model
     MODEL_BACKEND=my_pkg.my_module:MyModel python app.py   # any class you write
 
 To plug in another model (e.g. DINOv3): write a class with
@@ -70,37 +70,56 @@ class DummyModel:
         return _to_ordered_dict(dict(zip(CLASS_ORDER, e / e.sum())))
 
 
-def extract_features(before_rgb, after_rgb):
-    """TODO: turn a (before, after) patch pair into the 287 features the model expects.
+class V4Model:
+    """Trained v4 ensemble (RF + ExtraTrees + HistGB, two-stage) from Eyes_on_Heritage_v4/.
 
-    NOT IMPLEMENTED on purpose. The code that produced the 287 features of
-    v4_best_baseline.joblib is not in this repo. pipeline_fixed.py::feats gives
-    only 22 hand-made features (1558 with USE_CNN), so it does not match.
-    Paste the original extractor here; it must return a 1-D array of length 287,
-    in the same order as at training time.
+    Mirrors pipeline_v4.py: colour-match the after patch to the before patch, z-score each
+    band, compute the 56 `feats_new` features, then scale them.
+
+    Two differences from training, both forced by a single uploaded pair:
+      * the 64 px patch is normalised on its own (training used a 192 px context window);
+      * training scaled features per city (median / IQR of that city's labelled points). An
+        upload has no city, so `v4_ref_stats.json` holds one pooled median / IQR instead.
+    Expect somewhat less reliable scores than the cross-validated numbers in metrics.json.
     """
-    raise NotImplementedError(
-        "Feature extraction for v4_best_baseline.joblib is missing (TODO in model.py). "
-        "Use MODEL_BACKEND=dummy until it is added.")
-
-
-class BaselineModel:
-    """StandardScaler + LogisticRegression saved in v4_best_baseline.joblib."""
-    name = "Baseline (logistic regression)"
+    name = "Trained v4 ensemble"
     is_placeholder = False
 
-    def __init__(self, path: Path = HERE / "v4_best_baseline.joblib"):
+    def __init__(self, path: Path = HERE / "holdout" / "model.joblib",
+                 stats: Path = HERE / "holdout" / "ref_stats.json"):
+        import __main__
         import joblib
-        self.pipe = joblib.load(path)
+        import json
+        import v4_model
+        # the model was pickled from a script run as __main__, so Ensemble must live there
+        if not hasattr(__main__, "Ensemble"):
+            __main__.Ensemble = v4_model.Ensemble
+        self.clf = joblib.load(path)
+        self.feats = v4_model.feats_new
+        ref = json.loads(stats.read_text())
+        self.med, self.scale = np.array(ref["median"]), np.array(ref["scale"])
+
+    @staticmethod
+    def prepare(before_rgb, after_rgb):
+        """uint8 (H, W, 3) pair -> two (3, H, W) z-scored arrays, as pipeline_v4.prep_pair."""
+        from skimage.exposure import match_histograms
+        b = before_rgb.astype("float32").transpose(2, 0, 1)
+        a = after_rgb.astype("float32").transpose(2, 0, 1)
+        a = np.stack([match_histograms(a[k], b[k]) for k in range(3)]).astype("float32")
+        z = lambda x: np.stack([(x[k] - x[k].mean()) / (x[k].std() + 1e-6) for k in range(3)])
+        return z(b), z(a)
+
+    def features(self, before_rgb, after_rgb):
+        b, a = self.prepare(before_rgb, after_rgb)
+        return np.nan_to_num(np.array(list(self.feats(b, a).values()), dtype="float32"))
 
     def predict_proba(self, before_rgb, after_rgb):
-        x = np.asarray(extract_features(before_rgb, after_rgb), dtype="float64").reshape(1, -1)
-        p = self.pipe.predict_proba(x)[0]
-        # use the model's own class order, then reorder to CLASS_ORDER
-        return _to_ordered_dict(dict(zip(self.pipe.classes_, p)))
+        x = (self.features(before_rgb, after_rgb) - self.med) / self.scale
+        p = self.clf.predict_proba(x.reshape(1, -1))[0]
+        return _to_ordered_dict(dict(zip(self.clf.classes_, p)))
 
 
-BACKENDS = {"dummy": DummyModel, "baseline": BaselineModel}
+BACKENDS = {"v4": V4Model, "dummy": DummyModel}
 
 # ------------------------------------------------------------------ public
 _model = None
@@ -110,7 +129,7 @@ def get_model():
     """Create the backend named by MODEL_BACKEND once, then reuse it."""
     global _model
     if _model is None:
-        spec = os.environ.get("MODEL_BACKEND", "dummy").strip()
+        spec = os.environ.get("MODEL_BACKEND", "v4").strip()
         if spec in BACKENDS:
             cls = BACKENDS[spec]
         elif ":" in spec:

@@ -1,0 +1,21 @@
+train 614 / test 155 points; held out: random 250 m cells
+test class counts: {'construction': np.int64(43), 'destruction': np.int64(12), 'no_change': np.int64(84), 'soil_sealing': np.int64(16)}
+
+HELD-OUT macro-F1 0.614 | accuracy 0.703 (n=155)
+              precision    recall  f1-score   support
+
+construction       0.57      0.72      0.64        43
+ destruction       0.44      0.33      0.38        12
+soil_sealing       0.75      0.56      0.64        16
+   no_change       0.81      0.77      0.79        84
+
+    accuracy                           0.70       155
+   macro avg       0.65      0.60      0.61       155
+weighted avg       0.71      0.70      0.70       155
+
+[[31  2  0 10]
+ [ 5  4  1  2]
+ [ 3  1  9  3]
+ [15  2  2 65]]
+
+wrote holdout/ (model.joblib, ref_stats.json, metrics.json, test_predictions.csv)
